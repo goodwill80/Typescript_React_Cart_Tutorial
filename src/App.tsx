@@ -12,7 +12,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Badge from '@mui/material/Badge';
 
 // Styled Component from MUI
-import { Wrapper } from './App.styles';
+import { Wrapper, StyledButton } from './App.styles';
 
 // Types
 export type CartItemType = {
@@ -33,6 +33,8 @@ const getProducts = async (): Promise<CartItemType[]> => {
 };
 
 function App() {
+  const [cartOpen, setCartOpen] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<CartItemType[] | null>([]);
   // Initialise useQuery by passing in desciption and the apicall function
   const { data, isLoading, error } = useQuery<CartItemType[]>(
     'products',
@@ -40,7 +42,7 @@ function App() {
   );
   // console.log(data);
 
-  const getTotalItems = () => null;
+  const getTotalItems = (items: CartItemType[]) => null;
 
   const handleAddToCart = (clickedItem: CartItemType) => null;
 
@@ -51,6 +53,14 @@ function App() {
 
   return (
     <Wrapper>
+      <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
+        Cart goes here
+      </Drawer>
+      <StyledButton onClick={() => setCartOpen(true)}>
+        <Badge badgeContent={getTotalItems(cartItems!)} color="error">
+          <AddShoppingCartIcon />
+        </Badge>
+      </StyledButton>
       <Grid container spacing={3}>
         {data?.map((item) => (
           <Grid item key={item.id} xs={12} sm={4}>
