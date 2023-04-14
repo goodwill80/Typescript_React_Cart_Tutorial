@@ -42,10 +42,14 @@ function App() {
   );
   // console.log(data);
 
-  const getTotalItems = (items: CartItemType[]) => null;
+  // Get total amount of cart
+  const getTotalItems = (items: CartItemType[]) =>
+    items.reduce((a: number, b: CartItemType) => a + b.amount, 0);
 
+  // Add a product to cart on click
   const handleAddToCart = (clickedItem: CartItemType) => null;
 
+  // Remove a product from cart
   const handleRemoveFromCart = () => null;
 
   if (isLoading) return <LinearProgress />;
