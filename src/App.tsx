@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 
 // JSX Component
 import Items from './Items/Items';
+import Cart from './Cart/Cart';
 
 // MUI Components
 import Drawer from '@mui/material/Drawer';
@@ -58,7 +59,11 @@ function App() {
   return (
     <Wrapper>
       <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
-        Cart goes here
+        <Cart
+          cartItems={cartItems ?? []}
+          addToCart={handleAddToCart}
+          removeFromCart={handleRemoveFromCart}
+        />
       </Drawer>
       <StyledButton onClick={() => setCartOpen(true)}>
         <Badge badgeContent={getTotalItems(cartItems!)} color="error">
