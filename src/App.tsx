@@ -14,6 +14,7 @@ import Badge from '@mui/material/Badge';
 
 // Styled Component from MUI
 import { Wrapper, StyledButton } from './App.styles';
+import { click } from '@testing-library/user-event/dist/click';
 
 // Types
 export type CartItemType = {
@@ -35,7 +36,7 @@ const getProducts = async (): Promise<CartItemType[]> => {
 
 function App() {
   const [cartOpen, setCartOpen] = useState<boolean>(false);
-  const [cartItems, setCartItems] = useState<CartItemType[] | null>([]);
+  const [cartItems, setCartItems] = useState<CartItemType[] | []>([]);
   // Initialise useQuery by passing in desciption and the apicall function
   const { data, isLoading, error } = useQuery<CartItemType[]>(
     'products',
@@ -48,7 +49,21 @@ function App() {
     items.reduce((a: number, b: CartItemType) => a + b.amount, 0);
 
   // Add a product to cart on click
-  const handleAddToCart = (clickedItem: CartItemType) => null;
+  const handleAddToCart = (clickedItem: CartItemType) => {
+    setCartItems((prev) => {
+      // 1. is the item already in cart?
+      const isItemInCart = prev?.find((item) => item.id === clickedItem.id);
+      if (isItemInCart) {
+        return prev?.map((item) =>
+          item.id === clickedItem.id
+            ? { ...item, amount: item.amount + 1 }
+            : item
+        );
+      }
+      // First time the item is added
+      return [...prev, { ...clickedItem, amount: 1 }];
+    });
+  };
 
   // Remove a product from cart
   const handleRemoveFromCart = () => null;
